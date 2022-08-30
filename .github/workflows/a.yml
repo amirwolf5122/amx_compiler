@@ -20,3 +20,4 @@ jobs:
     - name: Analysing the code with pylint
       run: |
         npm i @cloudflare/wrangler -g
+        cargo install wrangler
