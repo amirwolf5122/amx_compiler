@@ -10,8 +10,8 @@ jobs:
         
       - name: step 2 - Add artifacts to publish to the temp folder
         run: |
-          git clone https://github.com/amirwolf5122/test.git
-          cd test
+          #git clone https://github.com/amirwolf5122/test.git
+          #cd test
           cd scripting
           chmod +x *
           ./compile.sh
@@ -20,4 +20,5 @@ jobs:
         uses: actions/upload-artifact@v2
         with: 
           name: assets-for-compiled
-          path: test/scripting/compiled
+          #path: test/scripting/compiled
+          path: scripting/compiled
