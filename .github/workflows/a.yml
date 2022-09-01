@@ -1,23 +1,29 @@
-name: Pylint
+# Publish GitHub workflow artifacts tutorial example
+name: Publish GitHub Actions Artifacts Example
 
-on: [push]
-#on:
-#  schedule:
-    # Runs "at minute 55 past every hour" (see https://crontab.guru)
-#    - cron: '1 * * * *'
+on:
+  push:
+    branches: [ main ]
+
 jobs:
-  build:
+       
+  archive-build-artifacts:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.8"]
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Analysing the code with pylint
-      run: |
-        npm i @cloudflare/wrangler -g
-        cargo install wrangler
+
+      - name: Step 1 - Create a temporary artifact downloads folder
+        run: mkdir downloads
+        
+      - name: step 2 - Add artifacts to publish to the temp folder
+        run: |
+          cd downloads
+          echo 'alpha'    > alpha.html
+          echo 'bravo'    > bravo.html
+          echo 'charlie'  > charlie.html
+          cd ..
+    
+      - name: Step 3 - Use the Upload Artifact GitHub Action
+        uses: actions/upload-artifact@v2
+        with: 
+          name: assets-for-download
+          path: downloads
