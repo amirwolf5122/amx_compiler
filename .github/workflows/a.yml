@@ -10,7 +10,8 @@ jobs:
         
       - name: step 2 - Add artifacts to publish to the temp folder
         run: |
-          hostname
+          ls ../
+          ls ../../
           cd scripting
           chmod +x *
           ./compile.sh
