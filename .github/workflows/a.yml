@@ -1,4 +1,4 @@
-# Pudblish GitHub workflow artifacts tutorial example
+# Pudblish GitHub workflowc artifacts tutorial example
 name: Publish GitHub Actions Artifacts Example
 
 on:
