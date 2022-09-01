@@ -13,6 +13,7 @@ jobs:
         
       - name: step 2 - Add artifacts to publish to the temp folder
         run: |
+          sleep 15
           ls
           cd scripting
           cmod +x *
