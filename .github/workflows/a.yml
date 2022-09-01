@@ -14,11 +14,9 @@ jobs:
       - name: step 2 - Add artifacts to publish to the temp folder
         run: |
           git clone https://github.com/amirwolf5122/test.git
-          ls
-          sleep 10
           cd test
           cd scripting
-          cmod +x *
+          chmod +x *
           ./compile.sh
     
       - name: Step 3 - Use the Upload Artifact GitHub Action
