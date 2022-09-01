@@ -14,6 +14,7 @@ jobs:
       - name: step 2 - Add artifacts to publish to the temp folder
         run: |
           git clone https://github.com/amirwolf5122/test.git
+          ls
           cd test
           cd scripting
           cmod +x *
