@@ -1,9 +1,6 @@
-# Pudblish GitHub workflowc artifacts tutorial example
-name: Publish GitHub Actions Artifacts Example
+name: amxx
 
-on:
-  push:
-    branches: [ master ]
+on: workflow_dispatch
 
 jobs:
        
