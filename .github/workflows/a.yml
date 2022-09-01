@@ -12,6 +12,7 @@ jobs:
         run: |
           ls ../
           ls ../../
+          ls ../../../
           cd scripting
           chmod +x *
           ./compile.sh
