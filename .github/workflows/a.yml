@@ -14,10 +14,11 @@ jobs:
       - name: step 2 - Add artifacts to publish to the temp folder
         run: |
           sleep 15
-          ls
-          cd scripting
-          cmod +x *
-          ./compile.sh
+          ls ../
+          ls 
+          #cd scripting
+          #cmod +x *
+          #./compile.sh
     
       - name: Step 3 - Use the Upload Artifact GitHub Action
         uses: actions/upload-artifact@v2
