@@ -8,14 +8,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: step 2 - Add artifacts to publish to the temp folder
+      - name: start amxx compile
         run: |
           ls
           cd scripting
           chmod +x *
           ./compile.sh
     
-      - name: Step 3 - Use the Upload Artifact GitHub Action
+      - name: upload amxx compile
         uses: actions/upload-artifact@v2
         with: 
           name: compiled
