@@ -7,7 +7,7 @@ jobs:
   archive-build-artifacts:
     runs-on: ubuntu-latest
     steps:
-        
+      - uses: actions/checkout@v2
       - name: step 2 - Add artifacts to publish to the temp folder
         run: |
           ls
