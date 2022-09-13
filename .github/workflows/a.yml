@@ -10,7 +10,6 @@ jobs:
       - uses: actions/checkout@v2
       - name: start amxx compile
         run: |
-          ls
           cd scripting
           chmod +x *
           ./compile.sh
