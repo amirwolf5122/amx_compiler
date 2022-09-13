@@ -11,8 +11,6 @@ jobs:
       - name: step 2 - Add artifacts to publish to the temp folder
         run: |
           ls
-          #git clone https://github.com/amirwolf5122/amx_compiler.git amxxmod2
-          #cd amxxmod2
           cd scripting
           chmod +x *
           ./compile.sh
@@ -20,5 +18,5 @@ jobs:
       - name: Step 3 - Use the Upload Artifact GitHub Action
         uses: actions/upload-artifact@v2
         with: 
-          name: assets-for-compiled
-          path: amxxmod2/scripting/compiled
+          name: compiled
+          path: scripting/compiled
