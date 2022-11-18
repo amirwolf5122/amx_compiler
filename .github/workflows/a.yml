@@ -19,3 +19,8 @@ jobs:
         with: 
           name: compiled
           path: scripting/compiled
+      - name: publish artifact
+        uses: actions/upload-artifact@v2
+        with:
+          path: ${{ github.workspace }}
+          name: ${{ env.VERSION_MAJOR }}.${{ env.VERSION_MINOR }}
