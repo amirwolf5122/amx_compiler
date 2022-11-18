@@ -19,10 +19,6 @@ jobs:
         with: 
           name: compiled
           path: scripting/compiled
-      - name: Deploy
-        uses: s0/git-publish-subdir-action@master
-        env:
-          REPO: self
-          BRANCH: data_build
-          FOLDER: scripting/compiled
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #- name: upload amxx compile2
+      - uses: actions/checkout@v2
+      - uses: preactjs/compressed-size-action@v2
