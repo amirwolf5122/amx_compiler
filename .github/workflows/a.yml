@@ -19,8 +19,10 @@ jobs:
         with: 
           name: compiled
           path: scripting/compiled
-      - name: publish artifact
-        uses: actions/upload-artifact@v2
-        with:
-          path: ${{ github.workspace }}
-          name: ${{ env.VERSION_MAJOR }}.${{ env.VERSION_MINOR }}
+      - name: Deploy
+        uses: s0/git-publish-subdir-action@master
+        env:
+          REPO: self
+          BRANCH: data_build
+          FOLDER: scripting/compiled
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
