@@ -19,6 +19,7 @@ jobs:
         with: 
           name: compiled
           path: scripting/compiled
-      #- name: upload amxx compile2
-      - uses: actions/checkout@v2
       - uses: preactjs/compressed-size-action@v2
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          clean-script: "clean"
