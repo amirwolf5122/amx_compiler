@@ -19,7 +19,4 @@ jobs:
         with: 
           name: compiled
           path: scripting/compiled
-      - uses: preactjs/compressed-size-action@v2
-        with:
-          repo-token: "${{ secrets.GITHUB_TOKEN }}"
-          clean-script: "clean"
+
