@@ -1,9 +1,6 @@
-name: Build
+name: amxx
 
-on:
-  push:
-    branches:
-      - main
+on: workflow_dispatch
 
 jobs:
   android:
