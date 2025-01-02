@@ -19,7 +19,7 @@ jobs:
           ./compile.sh
           zip -r compiled.zip scripting/compiled
       - name: Configure project
-        run: cmake --preset "linux-release-${{ matrix.arch }}"
+        run: cmake --preset "linux-release"
       - name: Build
         run: cmake --build .
         working-directory: build
@@ -29,12 +29,12 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ runner.os }}-${{ matrix.arch }}
+          name: linux-build
           path: build/*.tar.gz
   release:
     name: Release
     runs-on: ubuntu-latest
-    needs: [android, windows, linux]
+    needs: [linux]
     steps:
       - name: Fetch artifacts
         uses: actions/download-artifact@v4
@@ -63,9 +63,6 @@ jobs:
           file_glob: true
           file: CS16Client-*
           tag: continuous
-          overwrite: true
-          prerelease: true
-          release_name: amx_compiler
           overwrite: true
           prerelease: true
           release_name: CS16Client development build
