@@ -17,6 +17,7 @@ jobs:
           cd scripting
           chmod +x *
           ./compile.sh
+          ls
           zip -r compiled.zip compiled
       - name: Configure project
         run: cmake --preset "linux-release"
