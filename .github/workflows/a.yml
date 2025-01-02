@@ -1,10 +1,6 @@
-name: Compile and Release
+name: run
 
-on:
-  push:
-    branches:
-      - main  # یا هر شاخه‌ای که می‌خواهید این ورکفلو اجرا شود.
-
+on: workflow_dispatch
 jobs:
   build_and_release:
     runs-on: ubuntu-latest
