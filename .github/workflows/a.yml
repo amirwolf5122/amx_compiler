@@ -18,11 +18,13 @@ jobs:
           chmod +x *
           ./compile.sh
           ls -l compiled
-      - name: upload amxx compile
+          # ساخت فایل zip
+          zip -r compiled.zip compiled
+      - name: Upload compiled.zip
         uses: actions/upload-artifact@v4
-        with: 
+        with:
           name: compiled.zip
-          path: scripting/compiled
+          path: scripting/compiled.zip  # مسیر دقیق فایل zip ساخته شده
           
       - name: Deploy
         uses: s0/git-publish-subdir-action@master
@@ -47,10 +49,6 @@ jobs:
           tag_name: continuous
           delete_release: true
           repo: ${{ env.GITHUB_REPOSITORY }}
-      #- name: Prepare release
-      #  run: |
-      #    ls
-      #    sleep 60s
       - name: Purge artifacts
         uses: geekyeggo/delete-artifact@v2
         with:
@@ -61,7 +59,7 @@ jobs:
           repo_name: ${{ env.GITHUB_REPOSITORY }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file_glob: true
-          file: compiled*
+          file: compiled.zip  # آپلود فقط فایل compiled.zip
           tag: continuous
           overwrite: true
           prerelease: true
