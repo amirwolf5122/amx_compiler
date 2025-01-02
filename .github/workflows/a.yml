@@ -19,19 +19,11 @@ jobs:
           ./compile.sh
           ls -l compiled  # نمایش فایل‌های موجود در دایرکتوری compiled
           zip -r compiled.zip compiled/*
-      - name: Configure project
-        run: cmake --preset "linux-release"
-      - name: Build
-        run: cmake --build .
-        working-directory: build
-      - name: Package
-        run: cpack --config CPackConfig.cmake
-        working-directory: build
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: linux-build
-          path: build/*.tar.gz
+          path: compiled.zip
   release:
     name: Release
     runs-on: ubuntu-latest
