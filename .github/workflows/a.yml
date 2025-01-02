@@ -7,13 +7,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: start amxx compile
         run: |
           cd scripting
           chmod +x *
           ./compile.sh
-    
+
       - name: upload amxx compile
         uses: actions/upload-artifact@v4
         with: 
@@ -33,27 +33,10 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'push' }}
     steps:
-      - name: Remove old release, fetch artifacts, repackage binaries and upload new release
+      - name: Create a new release
+        id: create_release
+        run: |
+          gh release create "$RELEASE_TAG" scripting/compiled/* --repo "$GITHUB_REPOSITORY" --title "Release $RELEASE_TAG" --notes "Release notes for $RELEASE_TAG"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE_TAG: ${{ github.ref_name == 'master' && 'continuous' || format('continuous-{0}', github.ref_name) }}
-        run: |
-          gh release delete "$RELEASE_TAG" \
-            --yes \
-            --cleanup-tag \
-            --repo "$GITHUB_REPOSITORY" || true
-          sleep 20s
-          gh run download "$GITHUB_RUN_ID" \
-            --dir artifacts/ \
-            --repo "$GITHUB_REPOSITORY"
-          pushd artifacts/
-          echo "Found artifacts:"
-          ls
-          for i in $(find -mindepth 1 -maxdepth 1 -type d); do
-            mv "$i"/* .
-            rm -rf "$i"
-          done
-          echo "Repackaged artifacts:"
-          ls -R
-          popd
-          sleep 20s
