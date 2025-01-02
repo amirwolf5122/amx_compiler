@@ -3,11 +3,11 @@ name: amxx
 on: workflow_dispatch
 
 jobs:
-       
   amx_compiler:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+      
       - name: start amxx compile
         run: |
           cd scripting
@@ -15,10 +15,11 @@ jobs:
           ./compile.sh
     
       - name: upload amxx compile
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with: 
           name: compiled
           path: scripting/compiled
+          
       - name: Deploy
         uses: s0/git-publish-subdir-action@master
         env:
@@ -26,3 +27,33 @@ jobs:
           BRANCH: data_build
           FOLDER: scripting/compiled
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  release:
+    name: "Upload releases"
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' }}
+    steps:
+      - name: Remove old release, fetch artifacts, repackage binaries and upload new release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ github.ref_name == 'master' && 'continuous' || format('continuous-{0}', github.ref_name) }}
+        run: |
+          gh release delete "$RELEASE_TAG" \
+            --yes \
+            --cleanup-tag \
+            --repo "$GITHUB_REPOSITORY" || true
+          sleep 20s
+          gh run download "$GITHUB_RUN_ID" \
+            --dir artifacts/ \
+            --repo "$GITHUB_REPOSITORY"
+          pushd artifacts/
+          echo "Found artifacts:"
+          ls
+          for i in $(find -mindepth 1 -maxdepth 1 -type d); do
+            mv "$i"/* .
+            rm -rf "$i"
+          done
+          echo "Repackaged artifacts:"
+          ls -R
+          popd
+          sleep 20s
