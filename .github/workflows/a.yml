@@ -41,8 +41,7 @@ jobs:
           repo: ${{ env.GITHUB_REPOSITORY }}
       - name: Prepare release
         run: |
-          mv */*.zip .
-          mv */*.tar.gz .
+          mv compiled.zip
           sleep 60s
       - name: Purge artifacts
         uses: geekyeggo/delete-artifact@v2
