@@ -21,7 +21,7 @@ jobs:
       - name: upload amxx compile
         uses: actions/upload-artifact@v4
         with: 
-          name: compiled
+          name: compiled.zip
           path: scripting/compiled
           
       - name: Deploy
@@ -47,10 +47,10 @@ jobs:
           tag_name: continuous
           delete_release: true
           repo: ${{ env.GITHUB_REPOSITORY }}
-      - name: Prepare release
-        run: |
-          ls
-          sleep 60s
+      #- name: Prepare release
+      #  run: |
+      #    ls
+      #    sleep 60s
       - name: Purge artifacts
         uses: geekyeggo/delete-artifact@v2
         with:
