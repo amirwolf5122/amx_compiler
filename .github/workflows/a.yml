@@ -19,53 +19,35 @@ jobs:
           cd scripting
           chmod +x *
           ./compile.sh
-          ls -l compiled  # بررسی محتویات دایرکتوری compiled
           zip -r compiled.zip compiled  # ایجاد فایل zip از دایرکتوری compiled
 
       - name: Upload compiled.zip
         uses: actions/upload-artifact@v4
         with:
-          name: compiled.zip  # نام artifact
-          path: scripting/compiled.zip  # مسیر دقیق فایل zip
-
-      - name: Deploy
-        uses: s0/git-publish-subdir-action@master
-        env:
-          REPO: self
-          BRANCH: data_build
-          FOLDER: scripting/compiled
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: compiled.zip
+          path: scripting/compiled.zip
 
   release:
     name: Release
     runs-on: ubuntu-latest
     needs: [linux]
     steps:
-      - name: Fetch artifacts
+      - name: Fetch compiled.zip artifact
         uses: actions/download-artifact@v4
         with:
-          name: compiled.zip  # دانلود artifact با نام دقیق
+          name: compiled.zip
+
       - name: Remove old release
         uses: dev-drprasad/delete-tag-and-release@v1.0
         with:
           tag_name: continuous
           delete_release: true
-          github_token: ${{ secrets.GITHUB_TOKEN }}  # ارسال توکن معتبر GitHub
-      - name: Repackage compiled.zip
-        run: |
-          mkdir -p tfc  # ساخت دایرکتوری tfc اگر وجود ندارد
-          mv compiled.zip tfc/compiled.zip  # انتقال فایل به دایرکتوری tfc
-          zip -r tf15-client_compiled.zip tfc/  # ایجاد فایل zip جدید از دایرکتوری tfc
-      - name: Purge artifacts
-        uses: geekyeggo/delete-artifact@v2
-        with:
-          name: "*"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload new release
+      - name: Upload compiled.zip as release
         uses: svenstaro/upload-release-action@v2
         with:
-          file_glob: true
-          file: tf15-client_compiled.zip  # فقط فایل compiled.zip منتشر می‌شود
+          file: compiled.zip  # استفاده از فایل compiled.zip برای انتشار
           tag: continuous
           overwrite: true
           prerelease: true
