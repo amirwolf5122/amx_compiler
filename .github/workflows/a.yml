@@ -1,42 +1,47 @@
-name: amxx
+name: Compile and Upload Release
 
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # برای اجرای دستی
 
 jobs:
-  amx_compiler:
+  build_and_release:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-      - name: start amxx compile
-        run: |
-          cd scripting
-          chmod +x *
-          ./compile.sh
+    - name: Run compile script
+      run: |
+        cd scripting
+        chmod +x *
+        ./compile.sh
 
-      - name: upload amxx compile
-        uses: actions/upload-artifact@v4
-        with: 
-          name: compiled
-          path: scripting/compiled
-          
-      - name: Deploy
-        uses: s0/git-publish-subdir-action@master
-        env:
-          REPO: self
-          BRANCH: data_build
-          FOLDER: scripting/compiled
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Upload compiled artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: compiled
+        path: scripting/compiled
 
   release:
-    name: "Upload releases"
+    name: "Upload release"
     runs-on: ubuntu-latest
+    needs: build_and_release
     if: ${{ github.event_name == 'push' }}
     steps:
-      - name: Create a new release
-        id: create_release
-        run: |
-          gh release create "$RELEASE_TAG" scripting/compiled/* --repo "$GITHUB_REPOSITORY" --title "Release $RELEASE_TAG" --notes "Release notes for $RELEASE_TAG"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_TAG: ${{ github.ref_name == 'master' && 'continuous' || format('continuous-{0}', github.ref_name) }}
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Create a new release and upload artifacts
+      run: |
+        RELEASE_TAG="release-${{ github.sha }}"
+        gh release create "$RELEASE_TAG" scripting/compiled/* \
+          --title "Release $RELEASE_TAG" \
+          --notes "Automated release for $RELEASE_TAG" \
+          --repo "$GITHUB_REPOSITORY" \
+          --prerelease
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
