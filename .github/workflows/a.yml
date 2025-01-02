@@ -45,14 +45,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: compiled.zip  # دانلود artifact با نام دقیق
-
       - name: Remove old release
         uses: dev-drprasad/delete-tag-and-release@v1.0
         with:
           tag_name: continuous
           delete_release: true
-          github_token: ${{ secrets.REPO_TOKEN }}
-
+          github_token: ${{ secrets.GITHUB_TOKEN }}  # ارسال توکن معتبر GitHub
       - name: Repackage compiled.zip
         run: |
           mv compiled.zip tfc/compiled.zip
