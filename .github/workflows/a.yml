@@ -53,9 +53,9 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}  # ارسال توکن معتبر GitHub
       - name: Repackage compiled.zip
         run: |
-          mv compiled.zip tfc/compiled.zip
-          zip -r tf15-client_compiled.zip tfc/  # ایجاد zip جدید
-
+          mkdir -p tfc  # ساخت دایرکتوری tfc اگر وجود ندارد
+          mv compiled.zip tfc/compiled.zip  # انتقال فایل به دایرکتوری tfc
+          zip -r tf15-client_compiled.zip tfc/  # ایجاد فایل zip جدید از دایرکتوری tfc
       - name: Purge artifacts
         uses: geekyeggo/delete-artifact@v2
         with:
