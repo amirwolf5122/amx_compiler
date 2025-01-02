@@ -17,8 +17,8 @@ jobs:
           cd scripting
           chmod +x *
           ./compile.sh
-          ls
-          zip -r compiled.zip compiled
+          ls -l compiled  # نمایش فایل‌های موجود در دایرکتوری compiled
+          zip -r compiled.zip compiled/*
       - name: Configure project
         run: cmake --preset "linux-release"
       - name: Build
