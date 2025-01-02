@@ -22,10 +22,16 @@ jobs:
         cd scripting
         chmod +x *
         ./compile.sh
-        zip -r compiled.zip compiled/
-        
-    - name: Upload Release Asset
+        zip -r compiled.zip compiled/  # فقط فایل‌ها درون پوشه compiled را فشرده می‌کنیم
+
+    - name: Upload the zip file as an artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: compiled-files  # نام artifact که آپلود می‌شود
+        path: scripting/compiled.zip  # مسیر فایل زیپ شده که باید آپلود شود
+
+    - name: Create Release and upload compiled.zip
       uses: ncipollo/release-action@v1
       with:
-        files: scripting/compiled.zip
+        files: scripting/compiled.zip  # آپلود فایل زیپ به عنوان Release Asset
         tag: v1  # یا نام دیگری برای برچسب نسخه
