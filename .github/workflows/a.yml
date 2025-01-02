@@ -1,6 +1,7 @@
 name: amxx
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
 
 jobs:
   linux:
@@ -12,20 +13,21 @@ jobs:
         with:
           fetch-depth: 0
           submodules: recursive
+
       - name: RUN..
         run: |
           cd scripting
           chmod +x *
           ./compile.sh
-          ls -l compiled
-          # ساخت فایل zip
-          zip -r compiled.zip compiled
+          ls -l compiled  # بررسی محتویات دایرکتوری compiled
+          zip -r compiled.zip compiled  # ایجاد فایل zip از دایرکتوری compiled
+
       - name: Upload compiled.zip
         uses: actions/upload-artifact@v4
         with:
-          name: compiled.zip
-          path: scripting/compiled.zip  # مسیر دقیق فایل zip ساخته شده
-          
+          name: compiled.zip  # نام artifact
+          path: scripting/compiled.zip  # مسیر دقیق فایل zip
+
       - name: Deploy
         uses: s0/git-publish-subdir-action@master
         env:
@@ -41,25 +43,31 @@ jobs:
     steps:
       - name: Fetch artifacts
         uses: actions/download-artifact@v4
+        with:
+          name: compiled.zip  # دانلود artifact با نام دقیق
+
       - name: Remove old release
-        uses: ClementTsang/delete-tag-and-release@v0.3.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: dev-drprasad/delete-tag-and-release@v1.0
         with:
           tag_name: continuous
           delete_release: true
-          repo: ${{ env.GITHUB_REPOSITORY }}
+          github_token: ${{ secrets.REPO_TOKEN }}
+
+      - name: Repackage compiled.zip
+        run: |
+          mv compiled.zip tfc/compiled.zip
+          zip -r tf15-client_compiled.zip tfc/  # ایجاد zip جدید
+
       - name: Purge artifacts
         uses: geekyeggo/delete-artifact@v2
         with:
           name: "*"
+
       - name: Upload new release
         uses: svenstaro/upload-release-action@v2
         with:
-          repo_name: ${{ env.GITHUB_REPOSITORY }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
           file_glob: true
-          file: compiled.zip  # آپلود فقط فایل compiled.zip
+          file: tf15-client_compiled.zip  # فقط فایل compiled.zip منتشر می‌شود
           tag: continuous
           overwrite: true
           prerelease: true
