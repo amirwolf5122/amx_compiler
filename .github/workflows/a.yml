@@ -50,5 +50,5 @@ jobs:
           file: compiled.zip  # استفاده از فایل compiled.zip برای انتشار
           tag: amxx
           overwrite: true
-          prerelease: false
+          prerelease: true
           release_name: amx_compiler
