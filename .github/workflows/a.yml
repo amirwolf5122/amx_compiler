@@ -16,9 +16,6 @@ jobs:
 
       - name: RUN..
         run: |
-          cd scripting
-          chmod +x *
-          ./compile.sh
           zip -r cstrike.zip cstrike  # ایجاد فایل zip از دایرکتوری compiled
 
       - name: Upload cstrike.zip
