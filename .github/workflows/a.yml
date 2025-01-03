@@ -1,4 +1,4 @@
-name: BBHuman_Class
+name: amxx
 
 on:
   workflow_dispatch:
@@ -16,36 +16,39 @@ jobs:
 
       - name: RUN..
         run: |
-          zip -r cstrike.zip cstrike  # ایجاد فایل zip از دایرکتوری compiled
+          cd scripting
+          chmod +x *
+          ./compile.sh
+          zip -r compiled.zip compiled  # ایجاد فایل zip از دایرکتوری compiled
 
-      - name: Upload cstrike.zip
+      - name: Upload compiled.zip
         uses: actions/upload-artifact@v4
         with:
-          name: cstrike.zip
-          path: cstrike.zip
+          name: compiled.zip
+          path: scripting/compiled.zip
 
   release:
     name: Release
     runs-on: ubuntu-latest
     needs: [linux]
     steps:
-      - name: Fetch cstrike.zip artifact
+      - name: Fetch compiled.zip artifact
         uses: actions/download-artifact@v4
         with:
-          name: cstrike.zip
+          name: compiled.zip
 
       - name: Remove old release
         uses: dev-drprasad/delete-tag-and-release@v1.0
         with:
-          tag_name: 1.2
+          tag_name: amxx
           delete_release: true
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload cstrike.zip as release
+      - name: Upload compiled.zip as release
         uses: svenstaro/upload-release-action@v2
         with:
-          file: cstrike.zip  # استفاده از فایل compiled.zip برای انتشار
-          tag: 1.2
+          file: compiled.zip  # استفاده از فایل compiled.zip برای انتشار
+          tag: amxx
           overwrite: true
           prerelease: true
-          release_name: BBHuman_Class
+          release_name: amx_compiler
